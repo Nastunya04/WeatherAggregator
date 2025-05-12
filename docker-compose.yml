@@ -1,0 +1,62 @@
+version: "3.8"
+services:
+  fastapi_app:
+    build: .
+    container_name: fastapi_app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - influxdb
+    volumes:
+      - ./app:/app
+
+  celery_worker_1:
+    build: .
+    container_name: celery_worker_1
+    command: celery -A worker worker --loglevel=info
+    depends_on:
+      - redis
+      - influxdb
+    env_file:
+      - .env
+    volumes:
+      - ./app:/app
+
+  celery_worker_2:
+    build: .
+    container_name: celery_worker_2
+    command: celery -A worker worker --loglevel=info
+    depends_on:
+      - redis
+      - influxdb
+    env_file:
+      - .env
+    volumes:
+      - ./app:/app
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  influxdb:
+    image: influxdb:2.7
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUX_USERNAME}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUX_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ORG=${INFLUX_ORG}
+      - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUX_BUCKET}
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUX_TOKEN}
+
+volumes:
+  influxdb_data:

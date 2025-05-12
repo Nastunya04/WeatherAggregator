@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+celery[redis]
+httpx
+python-dotenv
+influxdb-client
