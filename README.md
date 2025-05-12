@@ -214,6 +214,23 @@ Task tasks.fetch_weather_summary[...] succeeded in ...s: {...}
 | `influxdb`      | A time-series database that logs structured telemetry about every user request and API source interaction. |
 | `alert_engine`  | Subsystem that writes alert `.txt` files to `app/error_reports/` when invalid input, personal data, or fraud is detected. |
 
+### Interaction Flow
+
+1. **User** sends a POST request to `/weather` with a city name.
+
+2. `fastapi_app`:
+   - Logs request to **InfluxDB**
+   - Validates input (**sync**)
+   - If valid, dispatches a **Celery task** (**async**)
+   - Returns `task_id`
+
+3. `celery_worker_N` picks up task:
+   - Logs source-level results to **InfluxDB**
+   - Simulates fetching weather from 3 APIs
+   - If an API fails, logs error and triggers an alert
+
+4. `/task/{task_id}` can be called to query task status.
+
 ### Operation Modes
 
 | Operation                     | Type           | Handled by           |
