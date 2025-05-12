@@ -165,7 +165,7 @@ curl -X POST http://localhost:8000/weather -H "Content-Type: application/json" -
 
 - **View the generated reports:**
 ```
-ls app/error_reports/
+ls app/app/error_reports/
 ```
 - Example Alert Report (TXT):
 ```
