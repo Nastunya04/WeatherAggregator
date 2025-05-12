@@ -35,7 +35,7 @@ weather_aggregator/
 ### Prerequisites
 
 - Docker & Docker Compose
-- `.env` file with:
+- Create `.env` file with:
 
 ```env
 INFLUX_URL=http://influxdb:8086
