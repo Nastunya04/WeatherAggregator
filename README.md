@@ -16,7 +16,7 @@ weather_aggregator/
 ├── Dockerfile
 ├── docker-compose.yml
 ├── requirements.txt
-└── .env
+└── .env #you should create one
 ```
 
 ## Features
