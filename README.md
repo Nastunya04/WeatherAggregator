@@ -52,10 +52,16 @@ CELERY_RESULT_BACKEND=redis://redis:6379/0
 ### Run the System
 
 ```bash
-docker-compose down --volumes  # Clean state
 docker-compose up --build
 ```
 
+### Stop the System
+
+To stop and remove all running containers, including networks and volumes:
+
+```bash
+docker-compose down --volumes
+```
 ---
 
 ## How to Use
